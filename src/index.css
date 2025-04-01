@@ -1,0 +1,7 @@
+/* src/index.css or your global CSS file */
+.typing-cursor {
+    font-size: inherit; /* Ensures the cursor matches the font size */
+    display: inline-block; /* Keeps the cursor inline with the text */
+    vertical-align: middle; /* Aligns the cursor vertically with the text */
+  }
+  
