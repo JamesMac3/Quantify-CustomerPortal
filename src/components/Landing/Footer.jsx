@@ -29,7 +29,7 @@ const Footer = () => {
       >
         <Container maxWidth="lg">
           <Typography variant="body1">
-            &copy; {new Date().getFullYear()} Quantify. All rights reserved.
+            &copy; 2025 Quantify investments LLC. All rights reserved.
           </Typography>
           <Typography variant="body2">
             <Link href="#" color="inherit">
