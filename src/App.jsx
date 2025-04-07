@@ -1,13 +1,15 @@
 // src/App.jsx
-import usePageAnalytics from './usePageAnalytics';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { CssBaseline } from '@mui/material';
+import { BrowserRouter as Router, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+
+import usePageAnalytics from './usePageAnalytics';
+import ThemeProvider from './context/ThemeContext';
+
 import Header from './components/Header';
 import Hero from './components/Landing/Hero';
 import Section from './components/Landing/Section';
 import Footer from './components/Landing/Footer';
-import ThemeProvider from './context/ThemeContext';
-import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 import Interface from './components/Interface';
@@ -19,6 +21,7 @@ import ModifyPortfolio from './components/ModifyPortfolio';
 import Verification from './components/Verification';
 import Account from './components/Account';
 import Docs from './components/Docs';
+
 const sections = [
   {
     id: 'quantify',
@@ -74,25 +77,41 @@ const sections = [
 
 const AppContent = () => {
   const location = useLocation();
-  const isInterfacePage = location.pathname.startsWith('/interface') ||
-                          location.pathname === '/verification' ||
-                          location.pathname === '/modify-portfolio' ||
-                          location.pathname === '/account' ||
-                          location.pathname === '/docs';
-                          usePageAnalytics();
+  const navigate = useNavigate();
+
+  usePageAnalytics();
+
+  useEffect(() => {
+    const path = sessionStorage.getItem('redirect-path');
+    if (path && location.pathname === '/') {
+      sessionStorage.removeItem('redirect-path');
+      navigate(path, { replace: true });
+    }
+  }, [location, navigate]);
+
+  const isInterfacePage =
+    location.pathname.startsWith('/interface') ||
+    location.pathname === '/verification' ||
+    location.pathname === '/modify-portfolio' ||
+    location.pathname === '/account' ||
+    location.pathname === '/docs';
+
   return (
     <>
       <Header isInterfacePage={isInterfacePage} />
       <Routes>
-        <Route path="/" element={
-          <>
-            <Hero />
-            {sections.map((section) => (
-              <Section key={section.id} {...section} />
-            ))}
-            <Footer />
-          </>
-        } />
+        <Route
+          path="/"
+          element={
+            <>
+              <Hero />
+              {sections.map((section) => (
+                <Section key={section.id} {...section} />
+              ))}
+              <Footer />
+            </>
+          }
+        />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/interface" element={<Interface />} />
