@@ -1,4 +1,5 @@
 // src/App.jsx
+import usePageAnalytics from './usePageAnalytics';
 import React from 'react';
 import { CssBaseline } from '@mui/material';
 import Header from './components/Header';
@@ -78,7 +79,7 @@ const AppContent = () => {
                           location.pathname === '/modify-portfolio' ||
                           location.pathname === '/account' ||
                           location.pathname === '/docs';
-
+                          usePageAnalytics();
   return (
     <>
       <Header isInterfacePage={isInterfacePage} />
