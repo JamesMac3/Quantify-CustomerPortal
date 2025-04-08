@@ -1,6 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
+const uuidv4 = () =>
+  crypto.randomUUID ? crypto.randomUUID() : ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+  );
+
 
 const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbyyeZXxOgCHJ8a-vUEy9NX8EBl6HpvCzrrWGFcYuGgrIU3ofenV_eExMcj-gdpGTTQ_cw/exec';
 const GEO_API = 'https://ipapi.co/json/';
@@ -14,10 +18,6 @@ const RESTRICTED_COUNTRIES = [
   'Slovenia', 'Spain', 'Sweden'
 ];
 
-const uuidv4 = () =>
-  crypto.randomUUID ? crypto.randomUUID() : ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
-    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-  );
 
 const usePageAnalytics = () => {
   const location = useLocation();
